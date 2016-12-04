@@ -4,7 +4,7 @@ const BUILTIN_HANDLE_REQUEST = Symbol('Generic request handler for GasBuddy serv
 
 module.exports = function expressPromisePatch(reqErrorLogger) {
   function handleWithPromises(req, res, next) {
-    if (!req.app || !req.app.gb) {
+    if (!req.app) {
       return this[BUILTIN_HANDLE_REQUEST](req, res, next);
     }
 
@@ -16,7 +16,7 @@ module.exports = function expressPromisePatch(reqErrorLogger) {
     }
 
     const nextDebounce = () => {
-      if (typeof logFromReqExtractor === 'function') {
+      if (typeof reqErrorLogger === 'function') {
         reqErrorLogger(req, new Error('Handler called next more than once'));
       }
     };

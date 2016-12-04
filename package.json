@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/express-promise-patch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A monkey patch to express 4 to better handle promises in handlers (i.e. async methods)",
   "main": "index.js",
   "scripts": {
