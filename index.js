@@ -2,6 +2,10 @@ const Layer = require('express/lib/router/layer');
 
 const BUILTIN_HANDLE_REQUEST = Symbol('Generic request handler for GasBuddy services');
 
+function isPromise(o) {
+  return !!o && typeof o.then === 'function' && !!o.catch;
+}
+
 module.exports = function expressPromisePatch(reqErrorLogger) {
   function handleWithPromises(req, res, next) {
     if (!req.app) {
@@ -28,8 +32,8 @@ module.exports = function expressPromisePatch(reqErrorLogger) {
       const maybePromise = fn(req, res, (e) => {
         nextProxy(e);
       });
-      if (maybePromise instanceof Promise) {
-        maybePromise.catch((error) => {
+      if (isPromise(maybePromise)) {
+        Promise.resolve(maybePromise).catch((error) => {
           nextProxy(error);
         });
       }
